@@ -1,0 +1,111 @@
+no terminal, digite  django-admin que vai listar todos os comandos encontrados no django
+
+para começar um projeto django, digite: django-admin startproject nomedoprojeto
+depois disso, via terminal, certifique-se que está dentro da pasta certa e digite
+python manage.py runserver
+Será criado um servidor local para dar andamento ao projeto
+Após o passo acima, deverá aparecer um link. Abra-o no navegador
+
+obs: Se quiser alterar a porta no ip, é só digitar python manage.py runserver numerodaporta
+exemplo: python manage.py runserver 5000
+
+para criar um projeto: django-admin createapp nomedoprojeto
+um projeto em django contém aplicações dentro dele. Aplicações de diversas funcionalidades
+
+para criar um app: python manage.py startapp nomedoapp  (denro da pasta do projeto)
+
+Para cada aplicação que criar, importe esta para o arquivo settings.py, em INSTALLED_APPS.
+Neste caso, seria 'invista_me'
+
+Para alterar a lingua, no mesmo arquivo settings.py, em LANGUAGE_CODE = 'pt-br'
+e em TIME_ZONE = 'America/Sao_Paulo'
+
+Para adicionar caminhos, vá no arquivo urls.py e import o app criado.
+Neste caso, seria o app invista: from invista import views
+
+Na sequencia, entre em views e import: from django.shortcuts import HttpResponser
+e crie uma função que desejar (ver no arquivo a função que foi criada)
+
+Depois do passo acima, volte ao arquivo urls.py e informe a rota em urlpatterns
+exemplo: path('',views.pagina_inicial)
+
+Criar página: Entrar dentro da aplicação, vá em templates e crie um arquivo html
+(e configure essa pagina html conforme necessidades), depois ir em views.py, criar uma função:
+Exemplo de função para pagina:
+def investimento(request):
+    return render(request, 'investimentos/investimentos.html')
+Na sequencia, registre a rota no projeto indo em urls.py, em urls PATTERNS configure a nova rota
+
+
+Usando templates: Criar uma pasta chamada templates dentro do app e dentro desta pasta criar
+outras pastas com o nome das paginas que estão contidas dentro. Para cada página, uma pasta.
+
+Tabelas para banco de dados são feitas através do models.py
+Para passar os dados para o banco de dados, vá no terminal, na mesma pasta do arquivos manage.py
+e digite: python manage.py makemigrations
+Será criado uma pasta chamado migrations dentro do app
+Para fazer as migrações, digite no terminal: python manage.py migrate
+Toda as vezes que for criar ou alterar uma tabela, os passos acima devem ser refeitos.
+Se for remover uma coluna, mesma coisa, apague no arquivo models.py e faça makemigrations e migrate
+
+CRUD - Vá para o arquivos urls.py e no campo URL PATTERNS[] digite path('admin/',admin.site.urls),
+Neste caso, vc abre o site e vai em endereço/admin
+Para criar um usuario, vá no terminal e digite python manage.py createsuperuser
+Para importar para a tela de admin uma tabela criada, vá em admin.py e faça as importação desta
+tabela do arquivo models.py
+
+
+Levando informações do banco de dados para uma pagina
+Vá em views.py e import a classe criada em models. No caso, seria a classe chamada Investimento
+from .models import Investimento
+Depois siga as ações feitas na função investimento em views.py
+
+Neste momento, criamos uma pagina com uma listagem dos itens cadastrados. Mas não podemos clicar
+para ver os detalhes de cada item. Agora vamos resolver isso.
+Isso é feito pelo template criando o seguinte botão com a seguinte rota:
+<td><button><a href="$ url 'detalhe' dado.id $">Detalhe</a> </button></td>
+Depois vá em views e crie a função para criação da pagina
+
+
+Criar formularios para o cliente preencher. Utiliza-se a classe ModelForms, criando um arquivo dentro 
+da aplicação (forms.py) e seguindo a configuração deste projeto
+
+Para auxiliar na introdução do css e deixas as paginas mais bonitas, por favor, instale:
+pip install crispy-bootstrap5
+Depois, entre no arquivos settings.py e em INSTALLED_APPS, adicione:
+'crispy_forms',
+'crispy_bootscrapy5'
+E logo abaixo de STATIC_URL = '/static/'
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+No arquivo html que será utilizado para dar estilo, digite: {% load crispy_forms_tags %}
+
+CRIAÇÃO DE UM NOVO app
+Vamos relembrar, primeiro vá até a pasta onde foi criado o projeto. Neste caso, pasta investimento.
+Abra o terminal e digite:  python manage.py startapp 'usuarios'
+Assim, foi criado o app.
+Os passos seguintes são:
+1 - Criar uma nova rota (urls.py no projeto) - não esquecer de importar o novo app e sua função views
+2 - Criar uma função responsável por entregar essa rota
+3 - Criar um template responsável por exibir os dados que serão exibidos no site
+
+CONECTANDO AO BANCO DE DADOS POSTGREE PELO SITE SUPABASE.com
+
+Algumas bibliotecas devem ser instaladas
+asgiref==3.4.1
+Django==3.2.5
+django-crispy-forms==1.12.0
+gunicorn==20.0.1
+psycopg2-binary
+pytz==2021.1
+sqlparse==0.4.1
+Obs: As versões podem ser outras mais atualizadas.
+
+No site SUPABASE.com entre em novo projeto, coloque o nome do projeto.
+Depois vá(no site) em project settings, data base. Lá terá algumas informações que precisamos
+para ligar nosso banco de dados.
+Depois vá no vscode e procure o arquivo settings.py e vá em DATABASES. Lá, terá um codigo em sqlite3
+e vamos substitui-lo para uma configuração para colocar o banco de dados na nuvem, cujo os dados
+estão disponiveis.
+Depois disso de pyhon manage.py makemigrations, python .\manage.py migrate e depois 
+python manage.py createsuperuser e coloque nome de usuario 
